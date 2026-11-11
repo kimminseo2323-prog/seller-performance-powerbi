@@ -1,0 +1,103 @@
+table seller_scorecard
+	lineageTag: 55a2abde-e355-504a-844d-7d3069c40a32
+
+	column seller_id
+		dataType: string
+		isHidden
+		lineageTag: cd7c1a7e-9205-5367-8a50-35f8ea42abdc
+		summarizeBy: none
+		sourceColumn: seller_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column orders_3m
+		dataType: int64
+		formatString: #,0
+		lineageTag: 5c440bcc-c01b-58db-8629-5eff97b1bb0b
+		summarizeBy: sum
+		sourceColumn: orders_3m
+
+		annotation SummarizationSetBy = Automatic
+
+	column gmv_3m
+		dataType: double
+		formatString: #,0
+		lineageTag: f6ad82d9-00e8-5b48-95aa-1798e1b13f99
+		summarizeBy: sum
+		sourceColumn: gmv_3m
+
+		annotation SummarizationSetBy = Automatic
+
+	column late_handoff_rate
+		dataType: double
+		formatString: 0.0%
+		lineageTag: 74bc327d-0247-5497-aedf-f891982bf2bb
+		summarizeBy: none
+		sourceColumn: late_handoff_rate
+
+		annotation SummarizationSetBy = Automatic
+
+	column late_delivery_rate
+		dataType: double
+		formatString: 0.0%
+		lineageTag: 2b3fa2ef-1e06-50d8-a63a-651c72b3153f
+		summarizeBy: none
+		sourceColumn: late_delivery_rate
+
+		annotation SummarizationSetBy = Automatic
+
+	column avg_review
+		dataType: double
+		formatString: 0.00
+		lineageTag: 31a5daa8-09a6-50c5-9754-5c3f3f9b46a3
+		summarizeBy: none
+		sourceColumn: avg_review
+
+		annotation SummarizationSetBy = Automatic
+
+	column low_review_rate
+		dataType: double
+		formatString: 0.0%
+		lineageTag: 79fc754a-4ffe-5bc4-86c7-1d501a1d886f
+		summarizeBy: none
+		sourceColumn: low_review_rate
+
+		annotation SummarizationSetBy = Automatic
+
+	column cancel_rate
+		dataType: double
+		formatString: 0.0%
+		lineageTag: 78398efa-daa2-56b8-ae1f-02f5257340e0
+		summarizeBy: none
+		sourceColumn: cancel_rate
+
+		annotation SummarizationSetBy = Automatic
+
+	column gmv_rank
+		dataType: int64
+		formatString: 0
+		lineageTag: 7956b4eb-e2f4-5717-a060-e1bca2f4cf17
+		summarizeBy: none
+		sourceColumn: gmv_rank
+
+		annotation SummarizationSetBy = Automatic
+
+	column seller_grade
+		dataType: string
+		lineageTag: 1cedca7e-5f68-57b3-9f2e-0b217957d5ec
+		summarizeBy: none
+		sourceColumn: seller_grade
+
+		annotation SummarizationSetBy = Automatic
+
+	partition seller_scorecard = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(File.Contents(DataFolder & "\seller_scorecard.csv"), [Delimiter = ",", Encoding = 65001, QuoteStyle = QuoteStyle.Csv]),
+				    Promoted = Table.PromoteHeaders(Source, [PromoteAllScalars = true]),
+				    Blanks = Table.ReplaceValue(Promoted, "", null, Replacer.ReplaceValue, {"seller_id", "orders_3m", "gmv_3m", "late_handoff_rate", "late_delivery_rate", "avg_review", "low_review_rate", "cancel_rate", "gmv_rank", "seller_grade"}),
+				    Typed = Table.TransformColumnTypes(Blanks, {{"seller_id", type text}, {"orders_3m", Int64.Type}, {"gmv_3m", type number}, {"late_handoff_rate", type number}, {"late_delivery_rate", type number}, {"avg_review", type number}, {"low_review_rate", type number}, {"cancel_rate", type number}, {"gmv_rank", Int64.Type}, {"seller_grade", type text}}, "en-US")
+				in
+				    Typed
+

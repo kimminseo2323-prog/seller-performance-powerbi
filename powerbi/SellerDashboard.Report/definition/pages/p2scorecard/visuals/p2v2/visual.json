@@ -1,0 +1,232 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
+  "name": "p2v2",
+  "position": {
+    "x": 430,
+    "y": 195,
+    "z": 0,
+    "height": 515,
+    "width": 830,
+    "tabOrder": 0
+  },
+  "visual": {
+    "visualType": "tableEx",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "dim_seller"
+                    }
+                  },
+                  "Property": "seller_code"
+                }
+              },
+              "queryRef": "dim_seller.seller_code",
+              "nativeQueryRef": "seller_code",
+              "displayName": "판매자"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "seller_scorecard"
+                    }
+                  },
+                  "Property": "seller_grade"
+                }
+              },
+              "queryRef": "seller_scorecard.seller_grade",
+              "nativeQueryRef": "seller_grade",
+              "displayName": "등급"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "seller_scorecard"
+                    }
+                  },
+                  "Property": "orders_3m"
+                }
+              },
+              "queryRef": "seller_scorecard.orders_3m",
+              "nativeQueryRef": "orders_3m",
+              "displayName": "주문(3개월)"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "seller_scorecard"
+                    }
+                  },
+                  "Property": "gmv_3m"
+                }
+              },
+              "queryRef": "seller_scorecard.gmv_3m",
+              "nativeQueryRef": "gmv_3m",
+              "displayName": "매출(3개월)"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "seller_scorecard"
+                    }
+                  },
+                  "Property": "late_handoff_rate"
+                }
+              },
+              "queryRef": "seller_scorecard.late_handoff_rate",
+              "nativeQueryRef": "late_handoff_rate",
+              "displayName": "출고 지연율"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "seller_scorecard"
+                    }
+                  },
+                  "Property": "low_review_rate"
+                }
+              },
+              "queryRef": "seller_scorecard.low_review_rate",
+              "nativeQueryRef": "low_review_rate",
+              "displayName": "저평점 비율"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "seller_scorecard"
+                    }
+                  },
+                  "Property": "avg_review"
+                }
+              },
+              "queryRef": "seller_scorecard.avg_review",
+              "nativeQueryRef": "avg_review",
+              "displayName": "평균 평점"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "seller_scorecard"
+                    }
+                  },
+                  "Property": "cancel_rate"
+                }
+              },
+              "queryRef": "seller_scorecard.cancel_rate",
+              "nativeQueryRef": "cancel_rate",
+              "displayName": "취소율"
+            }
+          ]
+        }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Column": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "seller_scorecard"
+                  }
+                },
+                "Property": "gmv_3m"
+              }
+            },
+            "direction": "Descending"
+          }
+        ]
+      }
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'판매자별 성과 (매출 순)'"
+                }
+              }
+            },
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "12D"
+                }
+              }
+            },
+            "fontColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#1F2937'"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      ],
+      "border": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "color": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#E5E7EB'"
+                    }
+                  }
+                }
+              }
+            },
+            "radius": {
+              "expr": {
+                "Literal": {
+                  "Value": "8D"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

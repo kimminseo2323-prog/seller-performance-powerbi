@@ -1,0 +1,77 @@
+table dim_date
+	lineageTag: 98531609-6c6f-52df-ab32-992aa7e92e96
+	dataCategory: Time
+
+	column date
+		dataType: dateTime
+		isKey
+		formatString: yyyy-mm-dd
+		lineageTag: 64b8981e-9cd3-5464-968a-255f5fabc2f1
+		summarizeBy: none
+		sourceColumn: date
+
+		annotation SummarizationSetBy = Automatic
+
+	column year
+		dataType: int64
+		formatString: 0
+		lineageTag: 2b6c800d-6f39-5e5e-bd34-5c1b2d4d1ad7
+		summarizeBy: none
+		sourceColumn: year
+
+		annotation SummarizationSetBy = Automatic
+
+	column month
+		dataType: int64
+		formatString: 0
+		lineageTag: fb4734ff-ab94-5a34-8bdd-0f9071a5b834
+		summarizeBy: none
+		sourceColumn: month
+
+		annotation SummarizationSetBy = Automatic
+
+	column year_month
+		dataType: string
+		lineageTag: 7a75649d-53fb-54cb-8f56-a30f5c253742
+		summarizeBy: none
+		sourceColumn: year_month
+
+		annotation SummarizationSetBy = Automatic
+
+	column month_start
+		dataType: dateTime
+		formatString: yyyy-mm
+		lineageTag: 17ec7aba-9d48-569f-b7b3-242620eb71ac
+		summarizeBy: none
+		sourceColumn: month_start
+
+		annotation SummarizationSetBy = Automatic
+
+	column quarter
+		dataType: string
+		lineageTag: 7a1272b3-a9aa-597a-bea2-d08c2c4e450c
+		summarizeBy: none
+		sourceColumn: quarter
+
+		annotation SummarizationSetBy = Automatic
+
+	column week_start
+		dataType: dateTime
+		formatString: yyyy-mm-dd
+		lineageTag: 2be7006d-c4fa-50b3-ab10-c6d9f1ea1ab5
+		summarizeBy: none
+		sourceColumn: week_start
+
+		annotation SummarizationSetBy = Automatic
+
+	partition dim_date = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(File.Contents(DataFolder & "\dim_date.csv"), [Delimiter = ",", Encoding = 65001, QuoteStyle = QuoteStyle.Csv]),
+				    Promoted = Table.PromoteHeaders(Source, [PromoteAllScalars = true]),
+				    Blanks = Table.ReplaceValue(Promoted, "", null, Replacer.ReplaceValue, {"date", "year", "month", "year_month", "month_start", "quarter", "week_start"}),
+				    Typed = Table.TransformColumnTypes(Blanks, {{"date", type date}, {"year", Int64.Type}, {"month", Int64.Type}, {"year_month", type text}, {"month_start", type date}, {"quarter", type text}, {"week_start", type date}}, "en-US")
+				in
+				    Typed
+

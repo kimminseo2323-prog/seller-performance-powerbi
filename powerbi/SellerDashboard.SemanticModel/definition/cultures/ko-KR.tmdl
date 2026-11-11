@@ -1,0 +1,200 @@
+cultureInfo ko-KR
+
+	linguisticMetadata =
+			{
+			  "Version": "2.0.0",
+			  "Language": "en-US",
+			  "Entities": {
+			    "dim_seller.seller_code": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "dim_seller",
+			          "ConceptualProperty": "seller_code"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "판매자": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "seller_scorecard.seller_grade": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "seller_scorecard",
+			          "ConceptualProperty": "seller_grade"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "등급": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "seller_scorecard.orders_3m": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "seller_scorecard",
+			          "ConceptualProperty": "orders_3m"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "주문(3개월)": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "seller_scorecard.gmv_3m": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "seller_scorecard",
+			          "ConceptualProperty": "gmv_3m"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "매출(3개월)": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "seller_scorecard.late_handoff_rate": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "seller_scorecard",
+			          "ConceptualProperty": "late_handoff_rate"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "출고 지연율": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "seller_scorecard.low_review_rate": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "seller_scorecard",
+			          "ConceptualProperty": "low_review_rate"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "저평점 비율": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "seller_scorecard.avg_review": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "seller_scorecard",
+			          "ConceptualProperty": "avg_review"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "평균 평점": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "seller_scorecard.cancel_rate": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "seller_scorecard",
+			          "ConceptualProperty": "cancel_rate"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "취소율": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "fact_order_seller.complaint_type": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "fact_order_seller",
+			          "ConceptualProperty": "complaint_type"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "불만 유형": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    }
+			  }
+			}
+		contentType: json
+

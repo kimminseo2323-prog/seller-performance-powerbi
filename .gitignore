@@ -1,0 +1,8 @@
+# 프로젝트에서 쓰지 않는 대용량 원본 (61MB)
+data/raw/olist_geolocation_dataset.csv
+# Power BI 로컬 캐시·개인 설정
+**/.pbi/cache.abf
+**/.pbi/localSettings.json
+# 개인 메모(지원 준비용)
+docs/00_설명_면접대비.md
+__pycache__/

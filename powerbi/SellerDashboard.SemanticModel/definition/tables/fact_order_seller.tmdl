@@ -1,0 +1,308 @@
+table fact_order_seller
+	lineageTag: c4c14474-be87-5bbf-a720-a084987fb499
+
+	measure 매출 = SUM(fact_order_seller[gmv])
+		formatString: #,0
+		displayFolder: 1 규모
+		lineageTag: dc6a9206-b5b0-526d-aad4-11318a3ec574
+
+	measure '주문 건수' = COUNTROWS(fact_order_seller)
+		formatString: #,0
+		displayFolder: 1 규모
+		lineageTag: 9879bc7f-343a-51ca-a0cc-1b16447d36d5
+
+	measure '활성 판매자 수' = DISTINCTCOUNT(fact_order_seller[seller_id])
+		formatString: #,0
+		displayFolder: 1 규모
+		lineageTag: dda74998-c3fc-5d55-b34f-422c757f4db2
+
+	measure '신규 판매자 수' = CALCULATE(COUNTROWS(dim_seller), TREATAS(VALUES(dim_date[month_start]), dim_seller[cohort_month]))
+		formatString: #,0
+		displayFolder: 1 규모
+		lineageTag: 272a2f88-807f-5050-96b9-da10c551b2f2
+
+	measure 객단가 = DIVIDE([매출], [주문 건수])
+		formatString: #,0
+		displayFolder: 1 규모
+		lineageTag: ebcc7979-0910-5893-adbc-e4025f609f7f
+
+	measure '매출 전월 대비' =
+			VAR cur = [매출]
+			VAR prev = CALCULATE([매출], DATEADD(dim_date[date], -1, MONTH))
+			RETURN DIVIDE(cur - prev, prev)
+		formatString: +0.0%;-0.0%;0.0%
+		displayFolder: 1 규모
+		lineageTag: 0ca2efb8-82c8-577b-a603-d194df3443ca
+
+	measure '배송 지연율' = AVERAGE(fact_order_seller[is_late_delivery])
+		formatString: 0.0%
+		displayFolder: 2 운영 품질
+		lineageTag: f9411bb1-9a54-53c6-84a6-35048cfeddee
+
+	measure '출고 지연율' = AVERAGE(fact_order_seller[is_late_handoff])
+		formatString: 0.0%
+		displayFolder: 2 운영 품질
+		lineageTag: 1911acfd-f080-50be-8c42-ee2da1c2306a
+
+	measure '평균 리드타임(일)' = AVERAGE(fact_order_seller[lead_time_days])
+		formatString: 0.0
+		displayFolder: 2 운영 품질
+		lineageTag: 59dcce89-9b74-54eb-bac5-8c98b12d4ac5
+
+	measure '평균 출고 소요(일)' = AVERAGE(fact_order_seller[handoff_days])
+		formatString: 0.0
+		displayFolder: 2 운영 품질
+		lineageTag: 2b51d44f-02aa-59c5-b932-a55a500ae295
+
+	measure 취소율 = AVERAGE(fact_order_seller[is_canceled])
+		formatString: 0.0%
+		displayFolder: 2 운영 품질
+		lineageTag: 140af45f-142f-575b-bf32-affe9b2fb223
+
+	measure '평균 평점' = AVERAGE(fact_order_seller[review_score])
+		formatString: 0.00
+		displayFolder: 3 고객 반응
+		lineageTag: 5e5d39bd-1ef0-53ae-b72e-828c8c5f9d62
+
+	measure '저평점 비율' = AVERAGE(fact_order_seller[is_low_review])
+		formatString: 0.0%
+		displayFolder: 3 고객 반응
+		lineageTag: 8e916306-1a65-5dea-8d44-def2b4ccc266
+
+	measure '불만 건수' = CALCULATE(COUNTROWS(fact_order_seller), KEEPFILTERS(NOT ISBLANK(fact_order_seller[complaint_type])))
+		formatString: #,0
+		displayFolder: 3 고객 반응
+		lineageTag: 4273c79a-aa35-513c-aa65-32b965b978d3
+
+	measure '1천 주문당 불만' = DIVIDE([불만 건수], [주문 건수]) * 1000
+		formatString: 0.0
+		displayFolder: 3 고객 반응
+		lineageTag: 27f12479-e06f-5f50-9324-8543b9349dae
+
+	measure '지연 배송 저평점 비율' = CALCULATE([저평점 비율], fact_order_seller[delivery_status] = "지연 배송")
+		formatString: 0.0%
+		displayFolder: 3 고객 반응
+		lineageTag: 17423bda-425a-514a-983f-69dea9bcd793
+
+	measure '정시 배송 저평점 비율' = CALCULATE([저평점 비율], fact_order_seller[delivery_status] = "정시 배송")
+		formatString: 0.0%
+		displayFolder: 3 고객 반응
+		lineageTag: 8dcd3c5e-4539-5fb8-821a-946732068019
+
+	measure '성과표 판매자 수' = COUNTROWS(seller_scorecard)
+		formatString: #,0
+		displayFolder: 4 성과표
+		lineageTag: ec6297dc-17c6-54b8-b8a1-7d2c373797c0
+
+	measure '성과표 출고 지연율' = AVERAGE(seller_scorecard[late_handoff_rate])
+		formatString: 0.0%
+		displayFolder: 4 성과표
+		lineageTag: ddba1e30-14d1-5db9-b0f7-b60afbd7dbd4
+
+	measure '성과표 저평점 비율' = AVERAGE(seller_scorecard[low_review_rate])
+		formatString: 0.0%
+		displayFolder: 4 성과표
+		lineageTag: 7309a179-4127-56c6-a543-0ecf5baf1374
+
+	measure '성과표 매출' = SUM(seller_scorecard[gmv_3m])
+		formatString: #,0
+		displayFolder: 4 성과표
+		lineageTag: 88df82c8-2dd9-5981-a721-57e26a804036
+
+	column order_id
+		dataType: string
+		isHidden
+		lineageTag: 289ebddf-a4d6-5bbb-b5e9-051af283c0cd
+		summarizeBy: none
+		sourceColumn: order_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column seller_id
+		dataType: string
+		isHidden
+		lineageTag: 78a6c9af-65bd-5d43-81a9-9c3b487c1cda
+		summarizeBy: none
+		sourceColumn: seller_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column customer_unique_id
+		dataType: string
+		isHidden
+		lineageTag: 30028ffd-0c9d-5bd7-9c4d-02b15214f746
+		summarizeBy: none
+		sourceColumn: customer_unique_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column customer_state
+		dataType: string
+		lineageTag: 78707a88-42d6-536b-aa61-e733788d0e26
+		summarizeBy: none
+		sourceColumn: customer_state
+
+		annotation SummarizationSetBy = Automatic
+
+	column purchase_date
+		dataType: dateTime
+		isHidden
+		formatString: yyyy-mm-dd
+		lineageTag: 423784ec-bfb5-57e8-8af2-67763c375621
+		summarizeBy: none
+		sourceColumn: purchase_date
+
+		annotation SummarizationSetBy = Automatic
+
+	column order_status
+		dataType: string
+		lineageTag: 0d616e81-770f-596c-be9e-196d75a29276
+		summarizeBy: none
+		sourceColumn: order_status
+
+		annotation SummarizationSetBy = Automatic
+
+	column item_cnt
+		dataType: int64
+		isHidden
+		formatString: #,0
+		lineageTag: c99786d5-f230-5332-84c8-a0a297ccc183
+		summarizeBy: sum
+		sourceColumn: item_cnt
+
+		annotation SummarizationSetBy = Automatic
+
+	column gmv
+		dataType: double
+		isHidden
+		formatString: #,0
+		lineageTag: 95b598ed-6f29-5133-9ecc-b72dda400610
+		summarizeBy: sum
+		sourceColumn: gmv
+
+		annotation SummarizationSetBy = Automatic
+
+	column freight
+		dataType: double
+		isHidden
+		formatString: #,0
+		lineageTag: 5062ef02-8481-586b-ae8b-cf4b49f957bb
+		summarizeBy: sum
+		sourceColumn: freight
+
+		annotation SummarizationSetBy = Automatic
+
+	column main_category
+		dataType: string
+		lineageTag: f056f8ae-681c-5c44-b439-09abe871a7a2
+		summarizeBy: none
+		sourceColumn: main_category
+
+		annotation SummarizationSetBy = Automatic
+
+	column lead_time_days
+		dataType: double
+		isHidden
+		formatString: 0.0
+		lineageTag: c94b262e-eb22-5ad4-843a-1ae29227f910
+		summarizeBy: none
+		sourceColumn: lead_time_days
+
+		annotation SummarizationSetBy = Automatic
+
+	column handoff_days
+		dataType: double
+		isHidden
+		formatString: 0.0
+		lineageTag: 3db93f96-af33-5522-94e7-2854075d9177
+		summarizeBy: none
+		sourceColumn: handoff_days
+
+		annotation SummarizationSetBy = Automatic
+
+	column is_late_delivery
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: d06a47d0-fed7-5d52-b62f-4c4a0c975b9a
+		summarizeBy: none
+		sourceColumn: is_late_delivery
+
+		annotation SummarizationSetBy = Automatic
+
+	column is_late_handoff
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 74bd7c21-7b92-5999-97eb-cbdf951a4ccf
+		summarizeBy: none
+		sourceColumn: is_late_handoff
+
+		annotation SummarizationSetBy = Automatic
+
+	column delivery_status
+		dataType: string
+		lineageTag: 2beed46d-c70b-52bc-8ec8-59e643cdce57
+		summarizeBy: none
+		sourceColumn: delivery_status
+
+		annotation SummarizationSetBy = Automatic
+
+	column is_canceled
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 736058d2-8d3f-586b-ac7f-11758e5bb989
+		summarizeBy: none
+		sourceColumn: is_canceled
+
+		annotation SummarizationSetBy = Automatic
+
+	column review_score
+		dataType: int64
+		formatString: 0
+		lineageTag: cf64d017-960a-551a-898a-a5b43502189d
+		summarizeBy: none
+		sourceColumn: review_score
+
+		annotation SummarizationSetBy = Automatic
+
+	column is_low_review
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: f667834a-31f8-5f4f-a54f-33b25fd2d7a0
+		summarizeBy: none
+		sourceColumn: is_low_review
+
+		annotation SummarizationSetBy = Automatic
+
+	column complaint_type
+		dataType: string
+		lineageTag: 29b0e664-0f40-5751-bce9-65d081904786
+		summarizeBy: none
+		sourceColumn: complaint_type
+
+		annotation SummarizationSetBy = Automatic
+
+	column is_multi_seller_order
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: a027d5f0-df88-5502-9c85-b608a6017d99
+		summarizeBy: none
+		sourceColumn: is_multi_seller_order
+
+		annotation SummarizationSetBy = Automatic
+
+	partition fact_order_seller = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(File.Contents(DataFolder & "\fact_order_seller.csv"), [Delimiter = ",", Encoding = 65001, QuoteStyle = QuoteStyle.Csv]),
+				    Promoted = Table.PromoteHeaders(Source, [PromoteAllScalars = true]),
+				    Blanks = Table.ReplaceValue(Promoted, "", null, Replacer.ReplaceValue, {"order_id", "seller_id", "customer_unique_id", "customer_state", "purchase_date", "order_status", "item_cnt", "gmv", "freight", "main_category", "lead_time_days", "handoff_days", "is_late_delivery", "is_late_handoff", "delivery_status", "is_canceled", "review_score", "is_low_review", "complaint_type", "is_multi_seller_order"}),
+				    Typed = Table.TransformColumnTypes(Blanks, {{"order_id", type text}, {"seller_id", type text}, {"customer_unique_id", type text}, {"customer_state", type text}, {"purchase_date", type date}, {"order_status", type text}, {"item_cnt", Int64.Type}, {"gmv", type number}, {"freight", type number}, {"main_category", type text}, {"lead_time_days", type number}, {"handoff_days", type number}, {"is_late_delivery", Int64.Type}, {"is_late_handoff", Int64.Type}, {"delivery_status", type text}, {"is_canceled", Int64.Type}, {"review_score", Int64.Type}, {"is_low_review", Int64.Type}, {"complaint_type", type text}, {"is_multi_seller_order", Int64.Type}}, "en-US")
+				in
+				    Typed
+

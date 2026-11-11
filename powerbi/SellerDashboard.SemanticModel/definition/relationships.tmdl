@@ -1,0 +1,12 @@
+relationship 23833230-4c89-5ddb-8eb9-806ccaa07ccc
+	fromColumn: fact_order_seller.seller_id
+	toColumn: dim_seller.seller_id
+
+relationship 8d7dcf00-0334-538f-aff2-19aa2562b96f
+	fromColumn: fact_order_seller.purchase_date
+	toColumn: dim_date.date
+
+relationship d5f448b9-7d40-597d-98a1-a9d5902dc183
+	fromColumn: seller_scorecard.seller_id
+	toColumn: dim_seller.seller_id
+

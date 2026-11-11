@@ -1,0 +1,21 @@
+model Model
+	culture: ko-KR
+	defaultPowerBIDataSourceVersion: powerBI_V3
+	sourceQueryCulture: ko-KR
+	dataAccessOptions
+		legacyRedirects
+		returnErrorValuesAsNull
+
+annotation __PBI_TimeIntelligenceEnabled = 0
+
+annotation PBI_QueryOrder = ["DataFolder", "fact_order_seller", "dim_seller", "dim_date", "seller_scorecard"]
+
+annotation PBI_ProTooling = ["DevMode"]
+
+ref table fact_order_seller
+ref table dim_seller
+ref table dim_date
+ref table seller_scorecard
+
+ref cultureInfo ko-KR
+

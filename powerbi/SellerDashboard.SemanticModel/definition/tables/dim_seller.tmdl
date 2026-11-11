@@ -1,0 +1,74 @@
+table dim_seller
+	lineageTag: 032df048-3733-5f6c-b535-1d8ec5ea67fd
+
+	column seller_id
+		dataType: string
+		isHidden
+		lineageTag: e2eb3671-fbd5-5160-a8f0-8208f18ebaae
+		summarizeBy: none
+		sourceColumn: seller_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column seller_code
+		dataType: string
+		lineageTag: 03eadc70-aef3-542a-a2cf-52dc1b3c14ef
+		summarizeBy: none
+		sourceColumn: seller_code
+
+		annotation SummarizationSetBy = Automatic
+
+	column seller_city
+		dataType: string
+		lineageTag: 97f37a96-e57f-5ac6-a10a-4e85083f2061
+		summarizeBy: none
+		sourceColumn: seller_city
+
+		annotation SummarizationSetBy = Automatic
+
+	column seller_state
+		dataType: string
+		lineageTag: eb48e3c3-4d4e-5bea-b871-1c851b854bd1
+		summarizeBy: none
+		sourceColumn: seller_state
+
+		annotation SummarizationSetBy = Automatic
+
+	column first_order_date
+		dataType: dateTime
+		formatString: yyyy-mm-dd
+		lineageTag: b3c7e669-796b-582a-abbf-cb3aac0cba6d
+		summarizeBy: none
+		sourceColumn: first_order_date
+
+		annotation SummarizationSetBy = Automatic
+
+	column cohort_month
+		dataType: dateTime
+		formatString: yyyy-mm
+		lineageTag: 5d3bb8fa-8a41-5818-87aa-06b5feb4823a
+		summarizeBy: none
+		sourceColumn: cohort_month
+
+		annotation SummarizationSetBy = Automatic
+
+	column total_orders
+		dataType: int64
+		formatString: #,0
+		lineageTag: 53f31d4b-4647-5fd3-985b-37c6d94ee585
+		summarizeBy: sum
+		sourceColumn: total_orders
+
+		annotation SummarizationSetBy = Automatic
+
+	partition dim_seller = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(File.Contents(DataFolder & "\dim_seller.csv"), [Delimiter = ",", Encoding = 65001, QuoteStyle = QuoteStyle.Csv]),
+				    Promoted = Table.PromoteHeaders(Source, [PromoteAllScalars = true]),
+				    Blanks = Table.ReplaceValue(Promoted, "", null, Replacer.ReplaceValue, {"seller_id", "seller_code", "seller_city", "seller_state", "first_order_date", "cohort_month", "total_orders"}),
+				    Typed = Table.TransformColumnTypes(Blanks, {{"seller_id", type text}, {"seller_code", type text}, {"seller_city", type text}, {"seller_state", type text}, {"first_order_date", type date}, {"cohort_month", type date}, {"total_orders", Int64.Type}}, "en-US")
+				in
+				    Typed
+
